@@ -7,7 +7,7 @@ Lumina AI is a modern, responsive AI-themed website that showcases an intelligen
 
 ## 🌐 Live Demo
 After enabling GitHub Pages, view the live website here:  
-👉 https://your-username.github.io/lumina-ai/
+👉 https://soumalya93h.github.io/AI/
 
 ---
 
