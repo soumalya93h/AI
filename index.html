@@ -39,7 +39,6 @@
             padding: 0 20px;
         }
         
-
         header {
             padding: 20px 0;
             background: rgba(15, 12, 41, 0.9);
@@ -61,6 +60,7 @@
             font-size: 28px;
             color: var(--primary);
             text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+            cursor: pointer;
         }
         
         .nav-links {
@@ -115,7 +115,6 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
         }
-        
 
         .hero {
             padding: 160px 0 100px;
@@ -159,7 +158,6 @@
             font-size: 1rem;
         }
         
-
         .features {
             padding: 100px 0;
             background: var(--darker);
@@ -218,7 +216,6 @@
             line-height: 1.6;
         }
         
-
         .demo {
             padding: 100px 0;
             background: var(--dark);
@@ -578,6 +575,157 @@
             color: var(--light-purple);
         }
         
+        .signup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .signup-container {
+            background: var(--darker);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary);
+            animation: slideUp 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: var(--light);
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .signup-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        
+        .signup-subtitle {
+            text-align: center;
+            color: var(--light-purple);
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--light-purple);
+        }
+        
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .password-strength {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0%;
+            background: #ff4757;
+            border-radius: 5px;
+            transition: width 0.3s, background 0.3s;
+        }
+        
+        .password-requirements {
+            font-size: 0.8rem;
+            color: var(--light-purple);
+            margin-top: 5px;
+        }
+        
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -614,6 +762,16 @@
             .steps {
                 grid-template-columns: 1fr;
             }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .signup-container {
+                padding: 30px 20px;
+                width: 95%;
+            }
         }
 
         .mobile-menu-btn {
@@ -645,11 +803,10 @@
     </style>
 </head>
 <body>
-
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">Lumina AI</div>
+                <div class="logo" id="home-logo">Lumina AI</div>
                 <nav class="nav-links">
                     <a href="#features">Features</a>
                     <a href="#how-it-works">How It Works</a>
@@ -658,8 +815,8 @@
                     <a href="#contact">Contact</a>
                 </nav>
                 <div class="nav-buttons">
-                    <button class="btn btn-outline">Login</button>
-                    <button class="btn btn-primary">Sign Up</button>
+                    <button class="btn btn-outline" id="login-btn">Login</button>
+                    <button class="btn btn-primary" id="signup-btn">Sign Up</button>
                 </div>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
@@ -668,18 +825,16 @@
         </div>
     </header>
 
-
     <section class="hero">
         <div class="container">
             <h1>Meet Lumina<br>Your AI Companion</h1>
             <p>Experience the future of AI assistance with Lumina. Intelligent conversations, seamless task management, and personalized learning - all in one powerful platform.</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary">Start Free Trial</button>
+                <button class="btn btn-primary" id="hero-signup">Start Free Trial</button>
                 <button class="btn btn-outline">Watch Demo</button>
             </div>
         </div>
     </section>
-
 
     <section class="features" id="features">
         <div class="container">
@@ -722,7 +877,6 @@
         </div>
     </section>
 
-
     <section class="demo" id="demo">
         <div class="container">
             <h2 class="section-title">Experience Lumina in Action</h2>
@@ -750,11 +904,10 @@
                         <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
-                <button class="btn btn-primary">Try Full Demo</button>
+                <button class="btn btn-primary" id="demo-signup">Try Full Demo</button>
             </div>
         </div>
     </section>
-
 
     <section class="how-it-works" id="how-it-works">
         <div class="container">
@@ -797,7 +950,6 @@
         </div>
     </section>
 
-
     <section class="pricing" id="pricing">
         <div class="container">
             <h2 class="section-title">Choose Your Plan</h2>
@@ -813,7 +965,7 @@
                         <li><i class="fas fa-check-circle"></i> Email support</li>
                         <li><i class="fas fa-check-circle"></i> Mobile app access</li>
                     </ul>
-                    <button class="btn btn-outline">Get Started</button>
+                    <button class="btn btn-outline pricing-signup" data-plan="Basic">Get Started</button>
                 </div>
                 
                 <div class="pricing-card recommended">
@@ -826,7 +978,7 @@
                         <li><i class="fas fa-check-circle"></i> Custom integrations</li>
                         <li><i class="fas fa-check-circle"></i> Analytics dashboard</li>
                     </ul>
-                    <button class="btn">Start Free Trial</button>
+                    <button class="btn pricing-signup" data-plan="Pro">Start Free Trial</button>
                 </div>
                 
                 <div class="pricing-card">
@@ -839,7 +991,7 @@
                         <li><i class="fas fa-check-circle"></i> Custom AI training</li>
                         <li><i class="fas fa-check-circle"></i> Advanced security</li>
                     </ul>
-                    <button class="btn btn-outline">Contact Sales</button>
+                    <button class="btn btn-outline pricing-signup" data-plan="Enterprise">Contact Sales</button>
                 </div>
             </div>
             
@@ -903,7 +1055,7 @@
                 <h2 class="section-title">Ready to Transform Your Workflow?</h2>
                 <p class="section-subtitle">Join thousands of professionals who are already using Lumina to boost their productivity and creativity. Start your free trial today.</p>
                 <div class="cta-buttons">
-                    <button class="btn btn-primary">Start Using Lumina</button>
+                    <button class="btn btn-primary" id="cta-signup">Start Using Lumina</button>
                     <button class="btn btn-outline">Schedule Demo</button>
                 </div>
             </div>
@@ -966,15 +1118,94 @@
         </div>
     </footer>
 
+    <div class="signup-modal" id="signup-modal">
+        <div class="signup-container">
+            <button class="close-modal" id="close-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <h2 class="signup-title">Create Your Account</h2>
+            <p class="signup-subtitle">Start your 14-day free trial of Lumina AI</p>
+            
+            <form class="signup-form" id="signup-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name" required placeholder="Enter your first name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" required placeholder="Enter your last name">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Create a secure password">
+                    <div class="password-strength">
+                        <div class="strength-meter" id="strength-meter"></div>
+                    </div>
+                    <div class="password-requirements">
+                        Must be at least 8 characters with uppercase, lowercase, and a number
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="plan">Select Plan</label>
+                    <select id="plan" name="plan">
+                        <option value="basic">Basic - $9.99/month</option>
+                        <option value="pro" selected>Pro - $19.99/month (14-day trial)</option>
+                        <option value="enterprise">Enterprise - $49.99/month</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="use-case">Primary Use Case</label>
+                    <select id="use-case" name="use-case">
+                        <option value="personal">Personal Assistant</option>
+                        <option value="business">Business & Productivity</option>
+                        <option value="creative">Creative Projects</option>
+                        <option value="learning">Learning & Education</option>
+                        <option value="development">Development & Coding</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="terms" required>
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="newsletter">
+                        Send me product updates, tips, and special offers
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create Account & Start Free Trial</button>
+            </form>
+            
+            <div class="form-footer">
+                <p>Already have an account? <a href="#" id="show-login">Log in</a></p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
         
         mobileMenuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
-        
         
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -989,30 +1220,111 @@
                         behavior: 'smooth'
                     });
                     
-                    
                     navLinks.classList.remove('active');
                 }
             });
         });
         
+        const signupModal = document.getElementById('signup-modal');
+        const signupButtons = document.querySelectorAll('.btn-primary, .pricing-signup, #signup-btn, #hero-signup, #cta-signup, #demo-signup');
+        const closeModal = document.getElementById('close-modal');
+        const homeLogo = document.getElementById('home-logo');
+        const signupForm = document.getElementById('signup-form');
+        const passwordInput = document.getElementById('password');
+        const strengthMeter = document.getElementById('strength-meter');
+        const planSelect = document.getElementById('plan');
         
-        document.querySelectorAll('.btn-primary').forEach(button => {
-            if (button.textContent.includes('Start') || button.textContent.includes('Sign Up')) {
-                button.addEventListener('click', () => {
-                    alert('Starting your free trial! In a real implementation, this would redirect to a signup page.');
-                });
+        function openSignupModal(plan = 'Pro') {
+            signupModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            if (plan) {
+                planSelect.value = plan.toLowerCase();
+            }
+        }
+        
+        function closeSignupModal() {
+            signupModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        signupButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const plan = button.getAttribute('data-plan');
+                
+                openSignupModal(plan);
+            });
+        });
+        
+        closeModal.addEventListener('click', closeSignupModal);
+        
+        signupModal.addEventListener('click', (e) => {
+            if (e.target === signupModal) {
+                closeSignupModal();
             }
         });
         
-        document.querySelectorAll('.btn-outline').forEach(button => {
-            if (button.textContent.includes('Demo')) {
-                button.addEventListener('click', () => {
-                    const demoSection = document.querySelector('.demo');
-                    demoSection.scrollIntoView({ behavior: 'smooth' });
-                });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && signupModal.style.display === 'flex') {
+                closeSignupModal();
             }
         });
         
+        homeLogo.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            const width = strength * 20;
+            strengthMeter.style.width = width + '%';
+            
+            if (strength <= 2) {
+                strengthMeter.style.background = '#ff4757'; 
+            } else if (strength <= 4) {
+                strengthMeter.style.background = '#ffa502'; 
+            } else {
+                strengthMeter.style.background = '#2ed573';
+            }
+        });
+        
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const userData = {
+                firstName: formData.get('first-name'),
+                lastName: formData.get('last-name'),
+                email: formData.get('email'),
+                plan: formData.get('plan'),
+                useCase: formData.get('use-case')
+            };
+            
+            alert(`Thank you ${userData.firstName}! Your ${userData.plan} account has been created. Check your email for verification.`);
+            
+            closeSignupModal();
+            
+            this.reset();
+            strengthMeter.style.width = '0%';
+        });
+        
+        document.getElementById('show-login').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Login form would appear here. For this demo, please use the sign-up form.');
+        });
         
         const chatInput = document.querySelector('.chat-input input');
         const chatMessages = document.querySelector('.chat-messages');
@@ -1028,22 +1340,18 @@
         function sendMessage() {
             const message = chatInput.value.trim();
             if (message) {
-                
                 const userMessageEl = document.createElement('div');
                 userMessageEl.classList.add('message', 'user-message');
                 userMessageEl.textContent = message;
                 chatMessages.appendChild(userMessageEl);
                 
-                
                 chatInput.value = '';
-                
                 
                 setTimeout(() => {
                     const aiMessageEl = document.createElement('div');
                     aiMessageEl.classList.add('message', 'ai-message');
                     aiMessageEl.textContent = getAIResponse(message);
                     chatMessages.appendChild(aiMessageEl);
-                    
                     
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 }, 1000);
@@ -1059,6 +1367,8 @@
                 return "I can help you manage your tasks and create a schedule. Would you like me to organize your to-do list?";
             } else if (lowerMessage.includes('learn') || lowerMessage.includes('study')) {
                 return "I'd be happy to help with your learning goals. What subject would you like to focus on?";
+            } else if (lowerMessage.includes('sign up') || lowerMessage.includes('register')) {
+                return "You can sign up for Lumina AI by clicking any of the 'Start Free Trial' buttons on this page!";
             } else {
                 return "I'm here to help! Could you tell me more about what you need assistance with?";
             }
