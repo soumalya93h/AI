@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina AI Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --accent: #ff00ff;
+            --dark: #0f0c29;
+            --darker: #080616;
+            --light: #f8f9fa;
+            --light-purple: #e6e6fa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            color: var(--light);
+            display: flex;
+            flex-direction: column;
+        }
+        .page-header {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 12, 41, 0.95);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.25);
+        }
+        .page-header h1 {
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            color: var(--light);
+        }
+        .page-header a {
+            color: var(--light);
+            text-decoration: none;
+            background: rgba(138, 43, 226, 0.2);
+            padding: 10px 16px;
+            border-radius: 999px;
+            transition: background 0.2s ease;
+        }
+        .page-header a:hover {
+            background: rgba(138, 43, 226, 0.35);
+        }
+        .chat-shell {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 30px auto;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(138, 43, 226, 0.25);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+        }
+        .chat-header {
+            padding: 24px 30px;
+            background: rgba(15, 12, 41, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .chat-header h2 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: var(--light);
+        }
+        .chat-header p {
+            color: var(--light-purple);
+            margin-top: 6px;
+            font-size: 0.95rem;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 24px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+        .message {
+            line-height: 1.6;
+            padding: 16px 18px;
+            border-radius: 22px;
+            max-width: 80%;
+        }
+        .message.ai {
+            background: rgba(138, 43, 226, 0.18);
+            align-self: flex-start;
+            border-bottom-left-radius: 6px;
+        }
+        .message.user {
+            background: rgba(255, 255, 255, 0.14);
+            align-self: flex-end;
+            border-bottom-right-radius: 6px;
+        }
+        .chat-input-area {
+            padding: 20px 24px 24px;
+            background: rgba(15, 12, 41, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 12px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--light);
+            padding: 14px 18px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .chat-input-area button {
+            border: none;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: var(--light);
+            border-radius: 999px;
+            padding: 14px 20px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        @media (max-width: 768px) {
+            .chat-shell {
+                margin: 20px;
+            }
+            .chat-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .message {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <h1>Lumina AI Chat</h1>
+            <p>Ask the assistant anything and get instant help.</p>
+        </div>
+        <a href="testAI.html"><i class="fas fa-arrow-left"></i> Back to site</a>
+    </header>
+    <div class="chat-shell">
+        <div class="chat-header">
+            <div>
+                <h2>AI Chatbot</h2>
+                <p>Fast, friendly, and built for your workflow.</p>
+            </div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message ai">Hello! I’m Lumina. Tell me what you need help with today.</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSendBtn = document.getElementById('chat-send');
+
+        function appendMessage(text, sender) {
+            const el = document.createElement('div');
+            el.className = `message ${sender}`;
+            el.textContent = text;
+            chatMessages.appendChild(el);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) return "Hello there! How can I assist you today?";
+            else if (lowerMessage.includes('task') || lowerMessage.includes('schedule')) return "I can help you manage your tasks and create a schedule. Would you like me to organize your to-do list?";
+            else if (lowerMessage.includes('learn') || lowerMessage.includes('study')) return "I'd be happy to help with your learning goals. What subject would you like to focus on?";
+            else if (lowerMessage.includes('sign up') || lowerMessage.includes('register')) return "You can sign up for Lumina AI by clicking any of the buttons on the main site.";
+            else return "I'm here to help! Could you tell me more about what you need assistance with?";
+        }
+
+        function sendChat() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            appendMessage(text, 'user');
+            chatInput.value = '';
+            setTimeout(() => {
+                appendMessage(getAIResponse(text), 'ai');
+            }, 700);
+        }
+
+        chatSendBtn.addEventListener('click', sendChat);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendChat();
+            }
+        });
+    </script>
+</body>
+</html>
